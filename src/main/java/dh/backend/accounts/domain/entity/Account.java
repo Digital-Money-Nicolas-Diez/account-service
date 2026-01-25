@@ -8,6 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
+import dh.backend.accounts.domain.exception.DomainIntegrity;
 import lombok.Getter;
 
 @Getter
@@ -22,11 +23,11 @@ public class Account {
     public Account(UUID user, String cvu, String alias) {
 
         if (cvu != null && cvu.length() != MIN_LENGTH_CVU) {
-            throw new IllegalArgumentException("CVU must be 22 characters long");
+            throw new DomainIntegrity("CVU must be exactly " + MIN_LENGTH_CVU + " characters long");
         }
 
         if (alias != null && !alias.matches(Account.ALIAS_FORMAT)) {
-            throw new IllegalArgumentException("Alias format is invalid");
+            throw new DomainIntegrity("Alias format is invalid");
         }
 
         this.user = user;
