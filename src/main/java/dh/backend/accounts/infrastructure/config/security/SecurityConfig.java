@@ -22,7 +22,9 @@ public class SecurityConfig {
     @BeanProperty
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority("account.write"));
+                .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority("account.write")
+                .requestMatchers(HttpMethod.GET, "/api/accounts/balance/**").authenticated()
+                .anyRequest().permitAll());
         http.oauth2ResourceServer(auth -> auth
                 .jwt(jwt -> jwt
                         .jwtAuthenticationConverter(jwtAuthConverter)));
