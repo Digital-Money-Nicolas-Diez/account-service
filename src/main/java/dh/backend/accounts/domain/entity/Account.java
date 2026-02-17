@@ -15,12 +15,17 @@ import lombok.Getter;
 public class Account {
     private int MIN_LENGTH_CVU = 22;
     private static final String ALIAS_FORMAT = "^[a-z]+\\.[a-z]+\\.[a-z]+$";
-    private UUID user;
     private final Logger logger = Logger.getLogger(Account.class.getName());
-    String cvu;
-    String alias;
+    
+    private UUID user;
+    private Float balance;
+    private String cvu;
+    private String alias;
 
-    public Account(UUID user, String cvu, String alias) {
+    public Account(UUID user, String cvu, String alias, Float balance) {
+         if (balance != null && balance < 0) {
+            throw new DomainIntegrity("Balance cannot be negative");
+        }
 
         if (cvu != null && cvu.length() != MIN_LENGTH_CVU) {
             throw new DomainIntegrity("CVU must be exactly " + MIN_LENGTH_CVU + " characters long");
@@ -31,6 +36,7 @@ public class Account {
         }
 
         this.user = user;
+        this.balance = balance != null ? balance : 0;
         this.cvu = cvu != null ? cvu : createCvu();
         this.alias = alias != null ? alias : createAlias();
     }

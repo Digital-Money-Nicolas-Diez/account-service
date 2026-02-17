@@ -31,6 +31,9 @@ public class AccountEntity {
     @Column(name = "alias", nullable = false, unique = true)
     private String alias;
 
+    @Column(name = "balance", nullable = false, columnDefinition = "float default 0.0")
+    private Float balance;
+
     public AccountEntity() {
         // for JPA
     }
@@ -40,8 +43,14 @@ public class AccountEntity {
         entity.setUser(account.getUser());
         entity.setCvu(account.getCvu());
         entity.setAlias(account.getAlias());
+        entity.setBalance(account.getBalance());
 
         return entity;
+    }
+
+    public static Account toDomain(AccountEntity account) {
+        Account acc = new Account(account.getId(), account.getCvu(), account.getAlias(), account.getBalance());
+        return acc;
     }
 
     public AccountEntity(UUID id, UUID user, String cvu, String alias) {
