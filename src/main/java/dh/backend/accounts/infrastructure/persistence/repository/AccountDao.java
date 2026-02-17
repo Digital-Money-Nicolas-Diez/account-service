@@ -1,5 +1,8 @@
 package dh.backend.accounts.infrastructure.persistence.repository;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +13,7 @@ import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
 
 @Repository
 public class AccountDao implements AccountRepository {
-    
+
     private dh.backend.accounts.infrastructure.persistence.repository.AccountRepository database;
 
     public AccountDao(dh.backend.accounts.infrastructure.persistence.repository.AccountRepository database) {
@@ -25,7 +28,18 @@ public class AccountDao implements AccountRepository {
             throw new DomainIntegrity("Database integrity violation: " + e.getMessage());
         } catch (Exception e) {
             throw e;
-        }   
+        }
 
+    }
+
+    @Override
+    public Account get(UUID uuid, UUID user) {
+        try {
+            return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
+        } catch (DataIntegrityViolationException e) {
+            throw new DomainIntegrity("Database integrity violation: " + e.getMessage());
+        } catch (Exception e) {
+            throw e;
+        }
     }
 }
