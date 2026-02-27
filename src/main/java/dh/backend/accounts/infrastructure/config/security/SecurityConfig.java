@@ -24,6 +24,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority("account.write")
                 .requestMatchers(HttpMethod.GET, "/api/accounts/balance/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/accounts/transactions/").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/accounts/:ID/transactions/").hasRole("ADMIN")
                 .anyRequest().permitAll());
         http.oauth2ResourceServer(auth -> auth
                 .jwt(jwt -> jwt

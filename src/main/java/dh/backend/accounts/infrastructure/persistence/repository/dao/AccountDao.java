@@ -1,6 +1,5 @@
-package dh.backend.accounts.infrastructure.persistence.repository;
+package dh.backend.accounts.infrastructure.persistence.repository.dao;
 
-import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.dao.DataIntegrityViolationException;
