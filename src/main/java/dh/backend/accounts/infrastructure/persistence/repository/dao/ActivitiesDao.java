@@ -19,7 +19,7 @@ public class ActivitiesDao implements dh.backend.accounts.domain.repository.Acti
     }
 
     public List<Activities> get(UUID userId) {
-        return database.findByUserId(userId).stream()
+        return database.findTop5ByUserIdOrderByDatedDesc(userId).stream()
             .map(ActivitiesEntity::toDomain)
             .toList();
     }

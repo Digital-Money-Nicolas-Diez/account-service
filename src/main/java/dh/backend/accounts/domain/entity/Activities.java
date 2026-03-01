@@ -5,6 +5,9 @@ import java.util.UUID;
 
 import dh.backend.accounts.domain.enums.ActivitiesType;
 import dh.backend.accounts.domain.exception.DomainIntegrity;
+import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 
 @Getter
@@ -51,4 +54,12 @@ public class Activities {
 
         return field;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "origin", referencedColumnName = "cvu")
+    private AccountEntity originAccount;
+
+    @ManyToOne
+    @JoinColumn(name = "destination", referencedColumnName = "cvu")
+    private AccountEntity destinationAccount;
 }

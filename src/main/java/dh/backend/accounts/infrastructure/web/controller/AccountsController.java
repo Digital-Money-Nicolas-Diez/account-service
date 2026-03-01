@@ -4,15 +4,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import dh.backend.accounts.application.CreateUseCase;
+import dh.backend.accounts.application.GetActivities;
 import dh.backend.accounts.application.GetByUuid;
 import dh.backend.accounts.domain.entity.Account;
+import dh.backend.accounts.domain.entity.Activities;
 import dh.backend.accounts.infrastructure.web.dto.BalanceResponseDto;
 import dh.backend.accounts.infrastructure.web.dto.CreateAccountDto;
+import dh.backend.accounts.infrastructure.web.dto.GetLastActivities;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
@@ -29,10 +33,12 @@ public class AccountsController {
 
     // private Logger logger = Logger.getLogger(AccountsController.class.getName());
     private CreateUseCase createUseCase;
+    private GetActivities getActivities;
     private GetByUuid getByUuid;
 
-    public AccountsController(CreateUseCase createUseCase, GetByUuid getByUuid) {
+    public AccountsController(CreateUseCase createUseCase, GetActivities getActivities, GetByUuid getByUuid) {
         this.createUseCase = createUseCase;
+        this.getActivities = getActivities;
         this.getByUuid = getByUuid;
     }
 
@@ -56,6 +62,26 @@ public class AccountsController {
         UUID user = UUID.fromString(token.getName());
         Account acccount = getByUuid.execute(accountId, user);
         return ResponseEntity.ok(new BalanceResponseDto(acccount.getBalance()));
+    }
+
+    @Operation(summary = "Get last 5 activities", description = "Get the last 5 activities from authenticated user.")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "409", description = "Domain Integrity Error")
+    @GetMapping("/ID/transactions")
+    public ResponseEntity<List<GetLastActivities>> getActivities(JwtAuthenticationToken token) {
+        UUID user = UUID.fromString(token.getName());
+        List<Activities> activities = getActivities.execute(user);
+        List<GetLastActivities> response = activities.stream()
+                .map(activity -> new GetLastActivities(
+                        activity.getId(),
+                        activity.getName(),
+                        activity.getAmount(),
+                        activity.getDated(),
+                        activity.getOrigin(),
+                        activity.getDestination(),
+                        activity.getType()))
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
 }
