@@ -13,17 +13,17 @@ import lombok.Getter;
 
 @Getter
 public class Account {
-    private int MIN_LENGTH_CVU = 22;
+    private final int MIN_LENGTH_CVU = 22;
     private static final String ALIAS_FORMAT = "^[a-z]+\\.[a-z]+\\.[a-z]+$";
     private final Logger logger = Logger.getLogger(Account.class.getName());
-    
-    private UUID user;
-    private Float balance;
-    private String cvu;
-    private String alias;
+
+    private final UUID user;
+    private final Float balance;
+    private final String cvu;
+    private final String alias;
 
     public Account(UUID user, String cvu, String alias, Float balance) {
-         if (balance != null && balance < 0) {
+        if (balance != null && balance < 0) {
             throw new DomainIntegrity("Balance cannot be negative");
         }
 
@@ -60,19 +60,18 @@ public class Account {
                 throw new IllegalStateException("accounts.csv not found in classpath");
             }
 
-            List<String> lines = new BufferedReader(
-                    new InputStreamReader(is))
+            List<String> lines = new BufferedReader(new InputStreamReader(is))
                     .lines()
                     .toList();
 
             int index = ThreadLocalRandom.current().nextInt(1, lines.size());
             String[] parts = lines.get(index).split(",");
 
-            return new String[] { parts[0], parts[1] };
+            return new String[]{parts[0], parts[1]};
 
         } catch (Exception e) {
             logger.warning("Error reading accounts.csv: " + e.getMessage());
-            return new String[] { "0000000000000000000000", "default.alias.value" };
+            return new String[]{"0000000000000000000000", "default.alias.value"};
         }
     }
 

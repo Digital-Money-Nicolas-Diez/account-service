@@ -38,9 +38,8 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
 
     private String getUserUUID(Jwt jwt) {
         String claimName = JwtClaimNames.SUB;
-        if (applicationProperties.getUuidClaim() != null) {
-            claimName = applicationProperties.getUuidClaim();
-        }
+
+        if (applicationProperties.getUuidClaim() != null) claimName = applicationProperties.getUuidClaim();
         return jwt.getClaim(claimName);
     }
 
@@ -49,6 +48,7 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
         Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
         Map<String, Object> resource;
         Collection<String> resourceRoles;
+
         if (resourceAccess == null
                 || (resource = (Map<String, Object>) resourceAccess.get("bank-accounts-service")) == null
                 || (resourceRoles = (Collection<String>) resource.get("roles")) == null) {
@@ -62,13 +62,9 @@ public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationTo
     private Collection<? extends GrantedAuthority> extractResourceRolesRealm(Jwt jwt) {
         Map<String, Object> resourceAccess = jwt.getClaim("realm_access");
         Collection<String> resourceRoles;
-        if (resourceAccess == null
-                || (resourceRoles = (Collection<String>) resourceAccess.get("roles")) == null) {
-            return Set.of();
-        }
-        return resourceRoles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toSet());
+
+        if (resourceAccess == null || (resourceRoles = (Collection<String>) resourceAccess.get("roles")) == null) return Set.of();
+        return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toSet());
     }
 
 }

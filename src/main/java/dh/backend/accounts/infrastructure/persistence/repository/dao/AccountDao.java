@@ -21,24 +21,13 @@ public class AccountDao implements AccountRepository {
 
     @Override
     public void create(Account account) {
-        try {
             database.save(AccountEntity.fromDomain(account));
-        } catch (DataIntegrityViolationException e) {
-            throw new DomainIntegrity("Database integrity violation: " + e.getMessage());
-        } catch (Exception e) {
-            throw e;
-        }
 
     }
 
     @Override
     public Account get(UUID uuid, UUID user) {
-        try {
             return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
-        } catch (DataIntegrityViolationException e) {
-            throw new DomainIntegrity("Database integrity violation: " + e.getMessage());
-        } catch (Exception e) {
-            throw e;
-        }
+
     }
 }

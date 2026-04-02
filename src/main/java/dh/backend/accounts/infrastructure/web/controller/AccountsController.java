@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class AccountsController {
 
     // private Logger logger = Logger.getLogger(AccountsController.class.getName());
-    private CreateUseCase createUseCase;
-    private GetByUuid getByUuid;
+    private final CreateUseCase createUseCase;
+    private final GetByUuid getByUuid;
 
     public AccountsController(CreateUseCase createUseCase, GetByUuid getByUuid) {
         this.createUseCase = createUseCase;
@@ -54,18 +54,7 @@ public class AccountsController {
     @GetMapping("/balance/{accountId}")
     public ResponseEntity<BalanceResponseDto> getBalance(@PathVariable UUID accountId, JwtAuthenticationToken token) {
         UUID user = UUID.fromString(token.getName());
-        Account acccount = getByUuid.execute(accountId, user);
-        return ResponseEntity.ok(new BalanceResponseDto(acccount.getBalance()));
+        Account account = getByUuid.execute(accountId, user);
+        return ResponseEntity.ok(new BalanceResponseDto(account.getBalance()));
     }
-
-    @Operation(summary = "Get account balance", description = "Get the balance of an account by its UUID. Its necessary to login first to obtain the user UUID.")
-    @ApiResponse(responseCode = "401", description = "Unauthorized")
-    @ApiResponse(responseCode = "409", description = "Domain Integrity Error")
-    @GetMapping("/balance/{accountId}")
-    public ResponseEntity<BalanceResponseDto> getAccount(@PathVariable UUID accountId, JwtAuthenticationToken token) {
-        UUID user = UUID.fromString(token.getName());
-        Account acccount = getByUuid.execute(accountId, user);
-        return ResponseEntity.ok(new BalanceResponseDto(acccount.getBalance()));
-    }
-
 }

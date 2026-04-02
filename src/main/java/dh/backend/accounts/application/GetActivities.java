@@ -13,7 +13,6 @@ import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundExceptio
 public class GetActivities {
 
     private ActivitiesRepository dataAccessObject;
-
     public GetActivities(ActivitiesRepository dataAccessObject) {
         this.dataAccessObject = dataAccessObject;
     }

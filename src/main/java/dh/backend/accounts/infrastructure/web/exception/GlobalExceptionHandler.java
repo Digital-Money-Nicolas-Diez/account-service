@@ -1,6 +1,7 @@
 package dh.backend.accounts.infrastructure.web.exception;
 
 import org.apache.hc.core5.http.HttpStatus;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,6 +38,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.SC_CONFLICT)
                 .body(new ApiResponse("DOMAIN_INTEGRITY_ERROR", ex.getMessage()));
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
+        return ResponseEntity
+                .status(HttpStatus.SC_CONFLICT)
+                .body(new ApiResponse("DATA_INTEGRITY_ERROR", ex.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ApiResponse> handleUnexpected(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
+                .body(new ApiResponse("UNEXPECTED_ERROR", ex.getMessage()));
     }
 
 }

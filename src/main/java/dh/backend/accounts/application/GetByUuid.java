@@ -12,7 +12,6 @@ import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundExceptio
 public class GetByUuid {
 
     private AccountRepository repository;
-
     public GetByUuid(AccountRepository repository) {
         this.repository = repository;
     }
