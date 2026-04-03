@@ -7,4 +7,6 @@ import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
 
 public interface AccountRepository extends JpaRepository<AccountEntity, UUID> {
     Optional<AccountEntity> findByIdAndUser(UUID id, UUID user);
+    Optional<AccountEntity> findByUser(UUID user);
+
 }

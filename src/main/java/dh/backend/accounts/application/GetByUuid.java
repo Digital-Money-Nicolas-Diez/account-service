@@ -11,14 +11,13 @@ import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundExceptio
 @Service
 public class GetByUuid {
 
-    private AccountRepository repository;
+    private final AccountRepository repository;
     public GetByUuid(AccountRepository repository) {
         this.repository = repository;
     }
 
-    public Account execute(UUID uuid, UUID user) {
-        Account account = repository.get(uuid, user);
-
+    public Account execute(UUID user) {
+        Account account = repository.getByUserId(user);
         if(account == null) throw new ResourceNotFoundException("Account not found");
         return account;
     }

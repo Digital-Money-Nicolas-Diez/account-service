@@ -21,13 +21,16 @@ public class AccountDao implements AccountRepository {
 
     @Override
     public void create(Account account) {
-            database.save(AccountEntity.fromDomain(account));
+        database.save(AccountEntity.fromDomain(account));
+    }
 
+    @Override
+    public Account getByUserId(UUID user) {
+        return database.findByUser(user).map(AccountEntity::toDomain).orElse(null);
     }
 
     @Override
     public Account get(UUID uuid, UUID user) {
-            return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
-
+        return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
     }
 }
