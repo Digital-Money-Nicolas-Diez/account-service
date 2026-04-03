@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import dh.backend.accounts.infrastructure.persistence.entity.ActivitiesEntity;
 
 public interface ActivitiesRepository extends JpaRepository<ActivitiesEntity, UUID> {
-    List<ActivitiesEntity> findTop5ByUserIdOrderByDatedDesc(UUID userId);
+    List<ActivitiesEntity> findByUserIdOrderByDatedDesc(UUID userId);
 }

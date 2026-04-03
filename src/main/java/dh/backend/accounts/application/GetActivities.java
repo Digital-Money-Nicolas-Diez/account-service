@@ -12,18 +12,14 @@ import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundExceptio
 @Service
 public class GetActivities {
 
-    private ActivitiesRepository dataAccessObject;
+    private final ActivitiesRepository dataAccessObject;
     public GetActivities(ActivitiesRepository dataAccessObject) {
         this.dataAccessObject = dataAccessObject;
     }
 
     public List<Activities> execute(UUID userId) {
-
         List<Activities> activities = dataAccessObject.get(userId);
-
-        if (activities == null || activities.isEmpty()) {
-            throw new ResourceNotFoundException("No activities found for user with id: " + userId);
-        }
+        if (activities == null || activities.isEmpty()) throw new ResourceNotFoundException("No activities found for user with id: " + userId);
         return activities;
     }
 }
