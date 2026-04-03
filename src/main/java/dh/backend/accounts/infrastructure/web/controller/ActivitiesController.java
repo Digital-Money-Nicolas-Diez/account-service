@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/accounts")
 @Tag(name = "Accounts", description = "Accounts management API")
 public class ActivitiesController {
-    private GetActivities getActivities;
+    private final GetActivities getActivities;
 
     public ActivitiesController(GetActivities getActivities) {
         this.getActivities = getActivities;
@@ -33,18 +34,8 @@ public class ActivitiesController {
     @GetMapping("/ID/transactions")
     public ResponseEntity<List<GetLastActivities>> getActivities(JwtAuthenticationToken token) {
         UUID user = UUID.fromString(token.getName());
-        List<Activities> activities = getActivities.execute(user);
-        List<GetLastActivities> response = activities.stream()
-                .map(activity -> new GetLastActivities(
-                        activity.getId(),
-                        activity.getName(),
-                        activity.getAmount(),
-                        activity.getDated(),
-                        activity.getOrigin(),
-                        activity.getDestination(),
-                        activity.getType()))
-                .toList();
-        return ResponseEntity.ok(response);
+        Stream<Activities> activities = getActivities.execute(user).stream();
+        return ResponseEntity.ok(activities.map(GetLastActivities::new).toList());
     }
 
 }
