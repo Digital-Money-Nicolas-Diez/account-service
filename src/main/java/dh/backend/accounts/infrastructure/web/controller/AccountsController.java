@@ -1,9 +1,9 @@
 package dh.backend.accounts.infrastructure.web.controller;
 
+import dh.backend.accounts.application.PatchAccountUseCase;
 import dh.backend.accounts.domain.entity.AccountFactory;
 import dh.backend.accounts.infrastructure.web.dto.CvuAndAlias;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import dh.backend.accounts.application.CreateUseCase;
 import dh.backend.accounts.application.GetByUuid;
@@ -19,9 +19,6 @@ import java.util.UUID;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.GetMapping;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -30,10 +27,12 @@ public class AccountsController {
 
     private final CreateUseCase createUseCase;
     private final GetByUuid getByUuid;
+    private final PatchAccountUseCase patchAccountUseCase;
 
-    public AccountsController(CreateUseCase createUseCase, GetByUuid getByUuid) {
+    public AccountsController(CreateUseCase createUseCase, GetByUuid getByUuid, PatchAccountUseCase patchAccountUseCase) {
         this.createUseCase = createUseCase;
         this.getByUuid = getByUuid;
+        this.patchAccountUseCase = patchAccountUseCase;
     }
 
     private Account getUserAccount(JwtAuthenticationToken token) {
@@ -55,16 +54,29 @@ public class AccountsController {
     @Operation(summary = "Get account balance", description = "Get the balance of an account by its UUID. Its necessary to login first to obtain the user UUID.")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "200", description = "Success response")
-    @GetMapping("/ID")
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @GetMapping("/ID/balance")
     public ResponseEntity<BalanceResponseDto> getBalance(JwtAuthenticationToken token) {
         return ResponseEntity.ok(new BalanceResponseDto(this.getUserAccount(token).getBalance()));
     }
 
-    @Operation(summary = "Get CVU and alias", description = "Get the CVU and alias of an account by its UUID. Its necessary to login first to obtain the user UUID.")
+    @Operation(summary = "Get account", description = "Get the cvu and alias of an account by its UUID. Its necessary to login first to obtain the user UUID.")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "200", description = "Success response")
-    @GetMapping("/id")
-    public ResponseEntity<CvuAndAlias> getCvuAndAlias(JwtAuthenticationToken token) {
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @GetMapping("/ID")
+    public ResponseEntity<CvuAndAlias> getAccount(JwtAuthenticationToken token) {
         return ResponseEntity.ok(new CvuAndAlias(this.getUserAccount(token)));
+    }
+
+    @Operation(summary = "Edit Cvu or Alias", description = "Edit the CVU or alias of an account by its UUID. Its necessary to login first to obtain the user UUID.")
+    @ApiResponse(responseCode = "401", description = "Unauthorized")
+    @ApiResponse(responseCode = "200", description = "Success response")
+    @ApiResponse(responseCode = "400", description = "Cvu or Alias invalid")
+    @ApiResponse(responseCode = "404", description = "User not found")
+    @PatchMapping("/ID")
+    public ResponseEntity<String> patchAccount(JwtAuthenticationToken token, @Valid @RequestBody CvuAndAlias body) {
+        this.patchAccountUseCase.execute(body, UUID.fromString(token.getName()));
+        return ResponseEntity.ok("Success");
     }
 }

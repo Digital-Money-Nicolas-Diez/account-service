@@ -2,6 +2,7 @@ package dh.backend.accounts.infrastructure.persistence.repository.dao;
 
 import java.util.UUID;
 
+import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import dh.backend.accounts.domain.entity.Account;
@@ -30,5 +31,12 @@ public class AccountDao implements AccountRepository {
     @Override
     public Account get(UUID uuid, UUID user) {
         return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
+    }
+
+    public void update(Account account){
+        AccountEntity entity = this.database.findByUser(account.getUser()).orElseThrow(()-> new ResourceNotFoundException(""));;
+        entity.setAlias(account.getAlias());
+        entity.setCvu(account.getCvu());
+        this.database.save(entity);
     }
 }
