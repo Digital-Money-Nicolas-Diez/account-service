@@ -38,7 +38,7 @@ public class AccountDao implements AccountRepository {
 
     @Override
     public void update(Account account){
-        AccountEntity entity = this.database.findByUser(account.getUser()).orElseThrow(()-> new ResourceNotFoundException(""));;
+        AccountEntity entity = this.database.findByUser(account.getUser()).orElseThrow(()-> new ResourceNotFoundException(""));
         entity.setAlias(account.getAlias());
         entity.setCvu(account.getCvu());
         this.database.save(entity);

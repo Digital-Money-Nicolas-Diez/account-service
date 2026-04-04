@@ -1,8 +1,5 @@
 package dh.backend.accounts.infrastructure.config.security;
 
-import java.beans.BeanProperty;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,7 +19,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http){
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/accounts").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
                 .requestMatchers(HttpMethod.GET, "/api/accounts/ID/balance").authenticated()
