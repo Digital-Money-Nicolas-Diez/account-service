@@ -38,7 +38,8 @@ public final class AccountFactory {
     public static Account create(UUID user) {
         return AccountFactory.create(user, null,null,null);
     }
-    public static Account create(UUID user, Float balance, String cvu, String alias) {
+    public static Account create(UUID user, String cvu, String alias) {return AccountFactory.create(user, cvu, alias,0.0F);}
+    public static Account create(UUID user, String cvu, String alias, Float balance) {
         String finalCvu = cvu != null ? cvu : getFromFile(CsvColumnIndex.CVU);
         String finalAlias = alias != null ? alias : getFromFile(CsvColumnIndex.ALIAS);
         return new Account(user, finalCvu, finalAlias, balance);
