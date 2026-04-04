@@ -3,16 +3,18 @@ package dh.backend.accounts.domain.entity;
 import java.util.UUID;
 import dh.backend.accounts.domain.exception.DomainIntegrity;
 import lombok.Getter;
+import lombok.Setter;
 
+@Setter
 @Getter
 public class Account {
-    private static final int MIN_LENGTH_CVU = 22;
-    private static final String ALIAS_FORMAT = "^[a-z]+\\.[a-z]+\\.[a-z]+$";
+    public static final int MIN_LENGTH_CVU = 22;
+    public static final String ALIAS_FORMAT = "^[a-z]+\\.[a-z]+\\.[a-z]+$";
 
-    private final UUID user;
-    private final Float balance;
-    private final String cvu;
-    private final String alias;
+    private UUID user;
+    private Float balance;
+    private String cvu;
+    private String alias;
 
     public Account(UUID user, String cvu, String alias, Float balance) {
         if (balance != null && balance < 0) {
