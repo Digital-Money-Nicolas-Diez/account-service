@@ -1,5 +1,6 @@
 package dh.backend.accounts.infrastructure.persistence.repository.dao;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundException;
@@ -18,6 +19,8 @@ public class AccountDao implements AccountRepository {
         this.database = database;
     }
 
+    private Account toDomain(Optional<AccountEntity> entity){ return entity.map(AccountEntity::toDomain).orElseThrow(()-> new ResourceNotFoundException(""));}
+
     @Override
     public void create(Account account) {
         database.save(AccountEntity.fromDomain(account));
@@ -25,14 +28,15 @@ public class AccountDao implements AccountRepository {
 
     @Override
     public Account getByUserId(UUID user) {
-        return database.findByUser(user).map(AccountEntity::toDomain).orElse(null);
+        return this.toDomain(database.findByUser(user));
     }
 
     @Override
     public Account get(UUID uuid, UUID user) {
-        return database.findByIdAndUser(uuid, user).map(AccountEntity::toDomain).orElse(null);
+        return this.toDomain(database.findByIdAndUser(uuid, user));
     }
 
+    @Override
     public void update(Account account){
         AccountEntity entity = this.database.findByUser(account.getUser()).orElseThrow(()-> new ResourceNotFoundException(""));;
         entity.setAlias(account.getAlias());
