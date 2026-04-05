@@ -5,33 +5,24 @@ import java.util.UUID;
 
 import dh.backend.accounts.domain.enums.ActivitiesType;
 import dh.backend.accounts.domain.exception.DomainIntegrity;
-import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 
 @Getter
 public class Activities {
-    private UUID id;
-    private String name;
-    private Float amount;
-    private OffsetDateTime dated;
-    private UUID userId;
-    private String origin;
-    private String destination;
-    private ActivitiesType type;
-    private int ORIGIN_DESTINATION_LEN = 22;
+    private final UUID id;
+    private final String name;
+    private final Float amount;
+    private final OffsetDateTime dated;
+    private final UUID userId;
+    private final String origin;
+    private final String destination;
+    private final ActivitiesType type;
+    public static int ORIGIN_DESTINATION_LEN = 22;
 
     public Activities(UUID id, String name, Float amount, OffsetDateTime dated, UUID userId, String origin,
-            String destination, ActivitiesType type) {
+                      String destination, ActivitiesType type) {
 
-        if (origin == null || origin.length() != ORIGIN_DESTINATION_LEN) {
-            throw new DomainIntegrity("origin must be exactly " + ORIGIN_DESTINATION_LEN + " characters long");
-        }
-
-        if (destination == null || destination.length() != ORIGIN_DESTINATION_LEN) {
-            throw new DomainIntegrity("destination must be exactly " + ORIGIN_DESTINATION_LEN + " characters long");
-        }
+        this.validate();
 
         this.id = this.require(id);
         this.name = this.require(name);
@@ -41,6 +32,16 @@ public class Activities {
         this.origin = this.require(origin);
         this.destination = this.require(destination);
         this.type = this.require(type);
+    }
+
+    private void validate() {
+        if (origin == null || origin.length() != ORIGIN_DESTINATION_LEN) {
+            throw new DomainIntegrity("origin must be exactly " + ORIGIN_DESTINATION_LEN + " characters long");
+        }
+
+        if (destination == null || destination.length() != ORIGIN_DESTINATION_LEN) {
+            throw new DomainIntegrity("destination must be exactly " + ORIGIN_DESTINATION_LEN + " characters long");
+        }
     }
 
     private <T> T require(T field) {
@@ -55,11 +56,4 @@ public class Activities {
         return field;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "origin", referencedColumnName = "cvu")
-    private AccountEntity originAccount;
-
-    @ManyToOne
-    @JoinColumn(name = "destination", referencedColumnName = "cvu")
-    private AccountEntity destinationAccount;
 }
