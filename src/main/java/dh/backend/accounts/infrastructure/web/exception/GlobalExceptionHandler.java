@@ -12,46 +12,46 @@ import dh.backend.accounts.domain.exception.DomainIntegrity;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ApiResponse> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<ApiErrorResponse> handleNotFound(ResourceNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_NOT_FOUND)
-                .body(new ApiResponse("RESOURCE_NOT_FOUND", ex.getMessage()));
+                .body(new ApiErrorResponse("RESOURCE_NOT_FOUND", ex.getMessage()));
     }
 
     @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ApiResponse> handleUnauthorized(UnauthorizedException ex) {
+    public ResponseEntity<ApiErrorResponse> handleUnauthorized(UnauthorizedException ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_UNAUTHORIZED)
-                .body(new ApiResponse("UNAUTHORIZED", ex.getMessage()));
+                .body(new ApiErrorResponse("UNAUTHORIZED", ex.getMessage()));
     }
 
     @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<ApiResponse> handleValidation(ValidationException ex) {
+    public ResponseEntity<ApiErrorResponse> handleValidation(ValidationException ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_BAD_REQUEST)
-                .body(new ApiResponse("VALIDATION_ERROR", ex.getMessage()));
+                .body(new ApiErrorResponse("VALIDATION_ERROR", ex.getMessage()));
 
     }
 
     @ExceptionHandler(DomainIntegrity.class)
-    public ResponseEntity<ApiResponse> handleDomainIntegrity(DomainIntegrity ex) {
+    public ResponseEntity<ApiErrorResponse> handleDomainIntegrity(DomainIntegrity ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_CONFLICT)
-                .body(new ApiResponse("DOMAIN_INTEGRITY_ERROR", ex.getMessage()));
+                .body(new ApiErrorResponse("DOMAIN_INTEGRITY_ERROR", ex.getMessage()));
     }
 
     @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ApiResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
+    public ResponseEntity<ApiErrorResponse> handleDataIntegrity(DataIntegrityViolationException ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_CONFLICT)
-                .body(new ApiResponse("DATA_INTEGRITY_ERROR", ex.getMessage()));
+                .body(new ApiErrorResponse("DATA_INTEGRITY_ERROR", ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleUnexpected(Exception ex) {
+    public ResponseEntity<ApiErrorResponse> handleUnexpected(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.SC_INTERNAL_SERVER_ERROR)
-                .body(new ApiResponse("UNEXPECTED_ERROR", ex.getMessage()));
+                .body(new ApiErrorResponse("UNEXPECTED_ERROR", ex.getMessage()));
     }
 
 }
