@@ -3,7 +3,7 @@ package dh.backend.accounts.infrastructure.web.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dh.backend.accounts.application.GetActivities;
+import dh.backend.accounts.application.GetAccountActivities;
 import dh.backend.accounts.domain.entity.Activities;
 import dh.backend.accounts.infrastructure.web.dto.GetLastActivities;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequestMapping("/api/accounts")
 @Tag(name = "Accounts", description = "Accounts management API")
 public class ActivitiesController {
-    private final GetActivities getActivities;
+    private final GetAccountActivities getAccountActivities;
 
-    public ActivitiesController(GetActivities getActivities) {
-        this.getActivities = getActivities;
+    public ActivitiesController(GetAccountActivities getAccountActivities) {
+        this.getAccountActivities = getAccountActivities;
     }
 
     @Operation(summary = "Get last 5 activities", description = "Get the last 5 activities from authenticated user.")
@@ -34,7 +34,7 @@ public class ActivitiesController {
     @GetMapping("/ID/transactions")
     public ResponseEntity<List<GetLastActivities>> getActivities(JwtAuthenticationToken token) {
         UUID user = UUID.fromString(token.getName());
-        Stream<Activities> activities = getActivities.execute(user).stream();
+        Stream<Activities> activities = getAccountActivities.execute(user).stream();
         return ResponseEntity.ok(activities.map(GetLastActivities::new).toList());
     }
 
