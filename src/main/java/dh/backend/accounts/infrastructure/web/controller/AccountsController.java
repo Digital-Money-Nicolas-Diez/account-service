@@ -1,12 +1,12 @@
 package dh.backend.accounts.infrastructure.web.controller;
 
-import dh.backend.accounts.application.PatchAccountUseCase;
+import dh.backend.accounts.application.UpdateCvuAndAlias;
 import dh.backend.accounts.domain.entity.AccountFactory;
 import dh.backend.accounts.infrastructure.web.dto.CvuAndAlias;
 import org.springframework.web.bind.annotation.*;
 
-import dh.backend.accounts.application.CreateUseCase;
-import dh.backend.accounts.application.GetByUuid;
+import dh.backend.accounts.application.CreateAccount;
+import dh.backend.accounts.application.GetUserAccount;
 import dh.backend.accounts.domain.entity.Account;
 import dh.backend.accounts.infrastructure.web.dto.BalanceResponseDto;
 import dh.backend.accounts.infrastructure.web.dto.CreateAccountDto;
@@ -25,19 +25,19 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 @Tag(name = "Accounts", description = "Accounts management API")
 public class AccountsController {
 
-    private final CreateUseCase createUseCase;
-    private final GetByUuid getByUuid;
-    private final PatchAccountUseCase patchAccountUseCase;
+    private final CreateAccount createAccount;
+    private final GetUserAccount getUserAccount;
+    private final UpdateCvuAndAlias patchAccountUseCase;
 
-    public AccountsController(CreateUseCase createUseCase, GetByUuid getByUuid, PatchAccountUseCase patchAccountUseCase) {
-        this.createUseCase = createUseCase;
-        this.getByUuid = getByUuid;
+    public AccountsController(CreateAccount createAccount, GetUserAccount getUserAccount, UpdateCvuAndAlias patchAccountUseCase) {
+        this.createAccount = createAccount;
+        this.getUserAccount = getUserAccount;
         this.patchAccountUseCase = patchAccountUseCase;
     }
 
     private Account getUserAccount(JwtAuthenticationToken token) {
         UUID user = UUID.fromString(token.getName());
-        return getByUuid.execute(user);
+        return getUserAccount.execute(user);
     }
 
     @Operation(summary = "Create a new account", description = "This endpoint is part of registration process.It creates a new EMPTY account with the user uuid provided. This endpoint is for intern consumption only")
@@ -47,7 +47,7 @@ public class AccountsController {
     @ApiResponse(responseCode = "409", description = "Domain Integrity Error")
     @PostMapping
     public ResponseEntity<Void> createAccount(@Valid @RequestBody CreateAccountDto accountDto) {
-        createUseCase.execute(AccountFactory.create(accountDto.user()));
+        createAccount.execute(AccountFactory.create(accountDto.user()));
         return ResponseEntity.ok().build();
     }
 

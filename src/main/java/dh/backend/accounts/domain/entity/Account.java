@@ -1,6 +1,7 @@
 package dh.backend.accounts.domain.entity;
 
 import java.util.UUID;
+
 import dh.backend.accounts.domain.exception.DomainIntegrity;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,12 +12,13 @@ public class Account {
     public static final int MIN_LENGTH_CVU = 22;
     public static final String ALIAS_FORMAT = "^[a-z]+\\.[a-z]+\\.[a-z]+$";
 
+    private UUID id;
     private UUID user;
     private Float balance;
     private String cvu;
     private String alias;
 
-    public Account(UUID user, String cvu, String alias, Float balance) {
+    public Account(UUID user, String cvu, String alias, Float balance, UUID id) {
         if (balance != null && balance < 0) {
             throw new DomainIntegrity("Balance cannot be negative");
         }
@@ -25,13 +27,24 @@ public class Account {
             throw new DomainIntegrity("CVU must be exactly " + MIN_LENGTH_CVU + " characters long");
         }
 
-        if (alias == null || !alias.matches(Account.ALIAS_FORMAT)) {
+        if (alias == null || !alias.matches(ALIAS_FORMAT)) {
             throw new DomainIntegrity("Alias is invalid");
         }
 
+        if (id != null) this.id = id;
         this.balance = balance != null ? balance : 0;
         this.user = user;
         this.cvu = cvu;
         this.alias = alias;
+    }
+
+    public void setAlias(String alias) {
+        if (alias == null) return;
+        this.alias = alias;
+    }
+
+    public void setCvu(String cvu) {
+        if (cvu == null) return;
+        this.cvu = cvu;
     }
 }

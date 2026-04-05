@@ -9,16 +9,20 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class PatchAccountUseCase {
+public class UpdateCvuAndAlias {
 
     private final AccountRepository repo;
-    public PatchAccountUseCase(AccountRepository repo) {
+
+    public UpdateCvuAndAlias(AccountRepository repo) {
         this.repo = repo;
     }
 
     public void execute(CvuAndAlias dto, UUID user) {
-        Account account = AccountFactory.create(user, dto.alias(), dto.cvu());
-        this.repo.update(account);
+        Account account = repo.getByUserId(user);
+        account.setCvu(dto.cvu());
+        account.setAlias(dto.alias());
+        repo.update(account);
+
     }
 
 }

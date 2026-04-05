@@ -3,6 +3,7 @@ package dh.backend.accounts.infrastructure.persistence.entity;
 import java.util.UUID;
 
 import dh.backend.accounts.domain.entity.Account;
+import dh.backend.accounts.domain.entity.AccountFactory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,13 +45,13 @@ public class AccountEntity {
         entity.setCvu(account.getCvu());
         entity.setAlias(account.getAlias());
         entity.setBalance(account.getBalance());
+        entity.setId(account.getId());
 
         return entity;
     }
 
     public static Account toDomain(AccountEntity account) {
-        Account acc = new Account(account.getId(), account.getCvu(), account.getAlias(), account.getBalance());
-        return acc;
+        return AccountFactory.create(account.getUser(), account.getCvu(), account.getAlias(), account.getBalance(), account.getId());
     }
 
     public AccountEntity(UUID id, UUID user, String cvu, String alias) {
