@@ -10,10 +10,10 @@ import dh.backend.accounts.domain.repository.ActivitiesRepository;
 import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundException;
 
 @Service
-public class GetActivities {
+public class GetAccountActivities {
 
     private final ActivitiesRepository dataAccessObject;
-    public GetActivities(ActivitiesRepository dataAccessObject) {
+    public GetAccountActivities(ActivitiesRepository dataAccessObject) {
         this.dataAccessObject = dataAccessObject;
     }
 

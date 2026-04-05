@@ -7,11 +7,11 @@ import dh.backend.accounts.domain.entity.Account;
 import dh.backend.accounts.domain.repository.AccountRepository;
 
 @Service
-public class GetByUuid {
+public class GetUserAccount {
 
     private final AccountRepository repository;
 
-    public GetByUuid(AccountRepository repository) {
+    public GetUserAccount(AccountRepository repository) {
         this.repository = repository;
     }
 
