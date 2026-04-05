@@ -3,7 +3,6 @@ package dh.backend.accounts.domain.repository;
 import java.util.UUID;
 
 import dh.backend.accounts.domain.entity.Account;
-import dh.backend.accounts.infrastructure.web.dto.CvuAndAlias;
 
 public interface AccountRepository {
     void create(Account account);

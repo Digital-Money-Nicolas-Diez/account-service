@@ -2,9 +2,7 @@ package dh.backend.accounts.infrastructure.persistence.repository.dao;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.logging.Logger;
 
-import dh.backend.accounts.infrastructure.web.dto.CvuAndAlias;
 import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Repository;
 
@@ -14,8 +12,6 @@ import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
 
 @Repository
 public class AccountDao implements AccountRepository {
-
-    private static final Logger logger = Logger.getLogger(AccountDao.class.getName());
 
     private final dh.backend.accounts.infrastructure.persistence.repository.AccountRepository database;
 
