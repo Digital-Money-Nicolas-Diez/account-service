@@ -26,8 +26,9 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
-                .requestMatchers(HttpMethod.GET, "/api/accounts/balance/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/accounts/balance").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/accounts/ID/transactions/**").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/accounts/ID").authenticated()
                 .anyRequest().permitAll());
 
         http.oauth2ResourceServer(auth -> auth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)));

@@ -55,7 +55,7 @@ public class AccountsController {
     @Operation(summary = "Get account balance", description = "Get the balance of an account by its UUID. Its necessary to login first to obtain the user UUID.")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "200", description = "Success response")
-    @GetMapping("/ID")
+    @GetMapping("/balance")
     public ResponseEntity<BalanceResponseDto> getBalance(JwtAuthenticationToken token) {
         return ResponseEntity.ok(new BalanceResponseDto(this.getUserAccount(token).getBalance()));
     }
@@ -63,7 +63,7 @@ public class AccountsController {
     @Operation(summary = "Get CVU and alias", description = "Get the CVU and alias of an account by its UUID. Its necessary to login first to obtain the user UUID.")
     @ApiResponse(responseCode = "401", description = "Unauthorized")
     @ApiResponse(responseCode = "200", description = "Success response")
-    @GetMapping("/id")
+    @GetMapping("/ID")
     public ResponseEntity<CvuAndAlias> getCvuAndAlias(JwtAuthenticationToken token) {
         return ResponseEntity.ok(new CvuAndAlias(this.getUserAccount(token)));
     }
