@@ -1,8 +1,6 @@
 package dh.backend.accounts.infrastructure.config.security;
 
-import java.beans.BeanProperty;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +20,7 @@ public class SecurityConfig {
         this.jwtAuthConverter = jwtAuthConverter;
     }
 
-    @BeanProperty
+    @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
