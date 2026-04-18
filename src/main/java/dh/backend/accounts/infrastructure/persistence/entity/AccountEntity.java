@@ -2,8 +2,6 @@ package dh.backend.accounts.infrastructure.persistence.entity;
 
 import java.util.UUID;
 
-import dh.backend.accounts.domain.entity.Account;
-import dh.backend.accounts.domain.entity.AccountFactory;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

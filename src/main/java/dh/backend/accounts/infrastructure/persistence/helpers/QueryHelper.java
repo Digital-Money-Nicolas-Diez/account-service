@@ -2,7 +2,6 @@ package dh.backend.accounts.infrastructure.persistence.helpers;
 
 import dh.backend.accounts.infrastructure.web.exception.ResourceNotFoundException;
 
-import java.util.List;
 import java.util.Optional;
 
 public class QueryHelper {

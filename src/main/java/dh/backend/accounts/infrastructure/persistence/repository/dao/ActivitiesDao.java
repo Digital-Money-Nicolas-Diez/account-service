@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.UUID;
 
 import dh.backend.accounts.infrastructure.mappers.Mapper;
-import dh.backend.accounts.infrastructure.persistence.helpers.QueryHelper;
 import org.springframework.stereotype.Repository;
 
 import dh.backend.accounts.domain.entity.Activities;

@@ -21,7 +21,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
                 .requestMatchers(HttpMethod.GET, "/api/accounts/balance").authenticated()

@@ -3,7 +3,6 @@ package dh.backend.accounts.infrastructure.persistence.entity;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
-import dh.backend.accounts.domain.entity.Activities;
 import dh.backend.accounts.domain.enums.ActivitiesType;
 import jakarta.persistence.*;
 import lombok.Getter;
