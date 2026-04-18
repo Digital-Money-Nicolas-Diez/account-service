@@ -1,11 +1,10 @@
 package dh.backend.accounts.infrastructure.mappers;
 
-import dh.backend.accounts.domain.entity.Account;
-import dh.backend.accounts.domain.entity.AccountFactory;
 import dh.backend.accounts.domain.entity.Activities;
-import dh.backend.accounts.infrastructure.persistence.entity.AccountEntity;
 import dh.backend.accounts.infrastructure.persistence.entity.ActivitiesEntity;
+import org.springframework.stereotype.Component;
 
+@Component
 public final class ActivitiesMapper implements Mapper<Activities, ActivitiesEntity> {
 
     @Override
