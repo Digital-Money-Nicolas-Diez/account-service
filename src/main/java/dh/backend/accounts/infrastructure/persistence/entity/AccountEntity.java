@@ -38,22 +38,6 @@ public class AccountEntity {
     public AccountEntity() {
         // for JPA
     }
-
-    public static AccountEntity fromDomain(Account account) {
-        AccountEntity entity = new AccountEntity();
-        entity.setUser(account.getUser());
-        entity.setCvu(account.getCvu());
-        entity.setAlias(account.getAlias());
-        entity.setBalance(account.getBalance());
-        entity.setId(account.getId());
-
-        return entity;
-    }
-
-    public static Account toDomain(AccountEntity account) {
-        return AccountFactory.create(account.getUser(), account.getCvu(), account.getAlias(), account.getBalance(), account.getId());
-    }
-
     public AccountEntity(UUID id, UUID user, String cvu, String alias) {
         this.id = id;
         this.user = user;

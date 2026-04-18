@@ -7,29 +7,26 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthConverter jwtAuthConverter;
+    private JwtAuthConverter jwtAuthConverter;
 
     public SecurityConfig(JwtAuthConverter jwtAuthConverter) {
         this.jwtAuthConverter = jwtAuthConverter;
     }
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http){
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/api/accounts").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
-                .requestMatchers(HttpMethod.GET, "/api/accounts/ID/balance").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/accounts/create").hasAuthority(Permission.ACCOUNT_WRITE.getValue())
+                .requestMatchers(HttpMethod.GET, "/api/accounts/balance").authenticated()
+                .requestMatchers(HttpMethod.GET, "/api/accounts/ID/transactions/**").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/accounts/ID").authenticated()
-                .requestMatchers(HttpMethod.PATCH, "/api/accounts/ID").authenticated()
-                .requestMatchers(
-                        "/swagger-ui/**",
-                        "/swagger-ui.html",
-                        "/v3/api-docs/**"
-                ).permitAll()
                 .anyRequest().permitAll());
 
         http.oauth2ResourceServer(auth -> auth.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthConverter)));

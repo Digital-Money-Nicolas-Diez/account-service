@@ -46,19 +46,6 @@ public class ActivitiesEntity {
         // for JPA
     }
 
-    public static Activities toDomain(ActivitiesEntity entity) {
-        return new Activities(
-                entity.getId(),
-                entity.getName(),
-                entity.getAmount(),
-                entity.getDated(), 
-                entity.getUserId(),
-                entity.getOrigin(),
-                entity.getDestination(),
-                entity.getType());
-    }
-
-
     @ManyToOne
     @JoinColumn(name = "origin", referencedColumnName = "cvu", insertable = false, updatable = false)
     private AccountEntity originAccount;

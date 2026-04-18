@@ -1,7 +1,9 @@
 package dh.backend.accounts.infrastructure.web.exception;
 
 
-public class ResourceNotFoundException extends RuntimeException {
+import java.util.function.Supplier;
+
+public class ResourceNotFoundException extends RuntimeException implements Supplier<X> {
     public ResourceNotFoundException(String message) {
         super(message);
     }

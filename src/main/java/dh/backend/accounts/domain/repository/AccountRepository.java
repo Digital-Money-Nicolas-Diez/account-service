@@ -6,10 +6,6 @@ import dh.backend.accounts.domain.entity.Account;
 
 public interface AccountRepository {
     void create(Account account);
-
-    Account get(UUID uuid, UUID user);
-
     Account getByUserId(UUID user);
-
     void update(Account account);
 }
