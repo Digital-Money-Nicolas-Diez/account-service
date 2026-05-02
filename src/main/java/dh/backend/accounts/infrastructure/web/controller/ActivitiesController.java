@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping("/api/accounts/transactions")
 @Tag(name = "Accounts", description = "Accounts management API")
 @SecuredEndpoint
 public class ActivitiesController {
@@ -40,7 +40,7 @@ public class ActivitiesController {
                     """
     )
     @ApiResponse(responseCode = "200", description = "Transaction history returned successfully")
-    @GetMapping("/ID/transactions")
+    @GetMapping("/ID")
     public ResponseEntity<List<GetLastActivities>> getActivities(JwtAuthenticationToken token) {
         UUID user = UUID.fromString(token.getName());
         Stream<Activities> activities = this.getActivities.execute(user).stream();
