@@ -3,6 +3,7 @@ target/
 .mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+CLAUDE.md
 
 ### DEV Environment ###
 ./src/main/resources/application-dev.yml
