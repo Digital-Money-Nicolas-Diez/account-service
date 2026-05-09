@@ -1,6 +1,9 @@
-package dh.backend.accounts.infrastructure.config.security.router;
+package dh.backend.accounts.infrastructure.router.chains;
 
 import dh.backend.accounts.infrastructure.config.security.JwtAuthConverter;
+import dh.backend.accounts.infrastructure.router.ApiConstants;
+import dh.backend.accounts.infrastructure.router.AppRoutes;
+import dh.backend.accounts.infrastructure.config.security.SecurityTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,7 +17,7 @@ public class ActivitiesSecurityFilterChain extends SecurityTemplate {
         super(jwtAuthConverter);
     }
 
-    void setRoutes(HttpSecurity http) {
+    protected void setRoutes(HttpSecurity http) {
         http.securityMatcher(ApiConstants.ACTIVITIES_BASE + "/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, AppRoutes.ACTIVITIES_GET.getRoute()).authenticated()

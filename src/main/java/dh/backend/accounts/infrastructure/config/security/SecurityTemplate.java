@@ -1,6 +1,5 @@
-package dh.backend.accounts.infrastructure.config.security.router;
+package dh.backend.accounts.infrastructure.config.security;
 
-import dh.backend.accounts.infrastructure.config.security.JwtAuthConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -8,7 +7,6 @@ import org.springframework.security.web.SecurityFilterChain;
 public abstract class SecurityTemplate {
 
     private final JwtAuthConverter jwtAuthConverter;
-
     public SecurityTemplate(JwtAuthConverter jwtAuthConverter) {
         this.jwtAuthConverter = jwtAuthConverter;
     }
@@ -21,5 +19,5 @@ public abstract class SecurityTemplate {
         return http.build();
     }
 
-    abstract void setRoutes(HttpSecurity http);
+    protected abstract void setRoutes(HttpSecurity http);
 }

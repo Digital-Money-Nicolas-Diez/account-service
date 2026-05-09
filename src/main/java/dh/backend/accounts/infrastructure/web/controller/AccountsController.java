@@ -3,6 +3,7 @@ package dh.backend.accounts.infrastructure.web.controller;
 import dh.backend.accounts.application.*;
 import dh.backend.accounts.domain.entity.Account;
 import dh.backend.accounts.domain.entity.AccountFactory;
+import dh.backend.accounts.infrastructure.router.ApiConstants;
 import dh.backend.accounts.infrastructure.web.dto.ApiErrorResponse;
 import dh.backend.accounts.infrastructure.web.dto.BalanceResponseDto;
 import dh.backend.accounts.infrastructure.web.dto.CreateAccountDto;
@@ -23,7 +24,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/accounts")
+@RequestMapping(ApiConstants.ACCOUNTS_BASE)
 @Tag(name = "Accounts", description = "Accounts management API")
 @SecuredEndpoint
 public class AccountsController {

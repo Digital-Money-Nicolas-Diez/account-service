@@ -2,6 +2,7 @@ package dh.backend.accounts.infrastructure.web.controller;
 
 import dh.backend.accounts.application.GetAccountActivities;
 import dh.backend.accounts.domain.entity.Activities;
+import dh.backend.accounts.infrastructure.router.ApiConstants;
 import dh.backend.accounts.infrastructure.web.dto.GetLastActivities;
 import dh.backend.accounts.infrastructure.web.swagger.SecuredEndpoint;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/accounts/transactions")
+@RequestMapping(ApiConstants.ACTIVITIES_BASE)
 @Tag(name = "Accounts", description = "Accounts management API")
 @SecuredEndpoint
 public class ActivitiesController {
