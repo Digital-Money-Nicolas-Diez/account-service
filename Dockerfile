@@ -1,5 +1,9 @@
 FROM maven:3.9-eclipse-temurin-21 AS builder
 WORKDIR /app
+
+RUN git clone https://github.com/Digital-Money-Nicolas-Diez/JwtConverterLib.git
+RUN cd JwtConverterLib && mvn install -DskipTests -q
+
 COPY pom.xml .
 RUN mvn dependency:go-offline -q
 COPY src ./src
