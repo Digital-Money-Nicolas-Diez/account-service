@@ -1,9 +1,9 @@
 package dh.backend.accounts.infrastructure.router.chains;
 
-import dh.backend.accounts.infrastructure.config.security.JwtAuthConverter;
+import org.digitalmoney.security.JwtAuthConverter;
 import dh.backend.accounts.infrastructure.router.ApiConstants;
 import dh.backend.accounts.infrastructure.router.AppRoutes;
-import dh.backend.accounts.infrastructure.config.security.SecurityTemplate;
+import org.digitalmoney.security.SecurityTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
