@@ -1,5 +1,6 @@
 package dh.backend.accounts.infrastructure.config.security;
 
+import org.jspecify.annotations.NonNull;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,55 +17,34 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Adapt Keycloak token information to Spring Security: GrantedAuthority collection
+ */
 @Component
 public class JwtAuthConverter implements Converter<Jwt, AbstractAuthenticationToken> {
 
     private final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-    private final JwtAuthConverterProperties applicationProperties;
-
-    public JwtAuthConverter(JwtAuthConverterProperties applicationProperties) {
-        this.applicationProperties = applicationProperties;
-    }
 
     @Override
-    public AbstractAuthenticationToken convert(Jwt jwt) {
+    public AbstractAuthenticationToken convert(@NonNull Jwt jwt) {
         Collection<GrantedAuthority> authorities = Stream.concat(
-                jwtGrantedAuthoritiesConverter.convert(jwt).stream(),
-                Stream.concat(extractResourceRoles(jwt).stream(), extractResourceRolesRealm(jwt).stream()))
+                        jwtGrantedAuthoritiesConverter.convert(jwt).stream(), extractResourceRolesRealm(jwt).stream())
                 .collect(Collectors.toSet());
 
         return new JwtAuthenticationToken(jwt, authorities, getUserUUID(jwt));
     }
 
     private String getUserUUID(Jwt jwt) {
-        String claimName = JwtClaimNames.SUB;
-
-        if (applicationProperties.getUuidClaim() != null) claimName = applicationProperties.getUuidClaim();
-        return jwt.getClaim(claimName);
+        return jwt.getClaim(JwtClaimNames.SUB);
     }
 
     @SuppressWarnings("unchecked")
-    private Collection<? extends GrantedAuthority> extractResourceRoles(Jwt jwt) {
-        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
-        Map<String, Object> resource;
-        Collection<String> resourceRoles;
-
-        if (resourceAccess == null
-                || (resource = (Map<String, Object>) resourceAccess.get("bank-accounts-service")) == null
-                || (resourceRoles = (Collection<String>) resource.get("roles")) == null) {
-            return Set.of();
-        }
-        return resourceRoles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                .collect(Collectors.toSet());
-    }
-
     private Collection<? extends GrantedAuthority> extractResourceRolesRealm(Jwt jwt) {
         Map<String, Object> resourceAccess = jwt.getClaim("realm_access");
         Collection<String> resourceRoles;
 
-        if (resourceAccess == null || (resourceRoles = (Collection<String>) resourceAccess.get("roles")) == null) return Set.of();
+        if (resourceAccess == null || (resourceRoles = (Collection<String>) resourceAccess.get("roles")) == null)
+            return Set.of();
         return resourceRoles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role)).collect(Collectors.toSet());
     }
-
 }
