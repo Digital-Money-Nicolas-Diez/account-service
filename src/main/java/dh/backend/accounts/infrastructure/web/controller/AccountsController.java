@@ -112,7 +112,7 @@ public class AccountsController {
             summary = "Edit Cvu or Alia",
             description = "Endpoint to edit account data"
     )
-    @ApiResponse(responseCode = "200", description = "Account created successfully")
+    @ApiResponse(responseCode = "200", description = "Account edited successfully")
     @ApiResponse(
             responseCode = "400",
             description = "Cvu or Alias invalid",
